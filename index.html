@@ -10,13 +10,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* --- 1. CSS VARIABLES --- */
         :root {
-            --primary-blue: #1e3a8a;
-            --primary-red: #e11d48;
-            --dark: #0f172a;
-            --light: #f8fafc;
+            --primary-blue: #1e3a8a;       /* Brand Blue */
+            --primary-red: #e11d48;        /* Brand Red/Accent */
+            --dark: #0f172a;               /* Text Dark */
+            --light: #f1f5f9;              /* Background Light */
+            --white: #ffffff;
             --text-gray: #64748b;
-            --card-bg: #ffffff;
+            --shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -30,24 +32,20 @@
             line-height: 1.6;
         }
 
-        /* Header */
+        /* --- 2. HEADER --- */
         header {
             position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            padding: 12px 5%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 10px 5%;
             z-index: 1000;
             display: flex; justify-content: space-between; align-items: center;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: var(--transition);
         }
 
-        .logo {
-            display: flex; align-items: center; gap: 10px;
-            text-decoration: none;
-        }
-        
         .logo img {
-            height: 45px;
+            height: 50px; /* Adjusted for Logo Size */
             width: auto;
             object-fit: contain;
         }
@@ -55,513 +53,258 @@
         .nav-links { display: flex; gap: 30px; align-items: center; list-style: none; }
         .nav-links a { 
             text-decoration: none; color: var(--dark); font-weight: 500; font-size: 0.95rem;
-            transition: var(--transition);
+            transition: var(--transition); position: relative;
         }
         .nav-links a:hover { color: var(--primary-blue); }
-
-        .menu-toggle { 
-            display: none; 
-            font-size: 1.5rem; 
-            cursor: pointer; 
-            color: var(--dark);
-            background: none;
-            border: none;
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0;
+            background-color: var(--primary-red); transition: width 0.3s;
         }
+        .nav-links a:hover::after { width: 100%; }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-blue), #2563eb);
             color: white; padding: 10px 25px; border-radius: 50px;
             font-weight: 600; text-decoration: none; border: none; cursor: pointer;
-            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.2);
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
             transition: var(--transition); display: inline-flex; align-items: center; gap: 8px;
             font-size: 0.9rem;
         }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(30, 58, 138, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(30, 58, 138, 0.4); }
 
-        @media (max-width: 968px) {
-            .nav-links { 
-                display: none; 
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: white;
-                flex-direction: column;
-                padding: 2rem;
-                gap: 1rem;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            }
-            .nav-links.active { display: flex; }
-            .menu-toggle { display: block; }
-        }
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; color: var(--dark); background: none; border: none; }
 
-        /* Hero Section */
+        /* --- 3. HERO SECTION --- */
         .hero {
             min-height: 100vh;
             display: flex; align-items: center; justify-content: center;
-            text-align: center; padding: 100px 20px 80px;
-            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.8)), 
-                        url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1920&q=80') center/cover;
+            text-align: center; padding: 120px 20px 80px;
+            /* Professional Dark Overlay + Background Image */
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.85), rgba(30, 58, 138, 0.8)), 
+                        url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1920&q=80') center/cover fixed;
             color: white; position: relative;
         }
 
-        .hero-content { max-width: 900px; animation: fadeInUp 1s ease-out; }
-        
-        /* Circular Logo in Hero */
+        .hero-content { max-width: 900px; animation: fadeInUp 0.8s ease-out; width: 100%; }
+
+        /* Floating Circle Logo */
         .hero-logo-circle {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 1.5rem;
+            width: 100px; height: 100px; margin: 0 auto 1.5rem;
             animation: float 4s ease-in-out infinite;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 50%; background: white; padding: 5px;
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
         }
-        
-        .hero-logo-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .hero-logo-circle img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
 
         .hero h1 {
-            font-size: 3rem; line-height: 1.2; margin-bottom: 20px; font-weight: 700;
+            font-size: 3.2rem; line-height: 1.2; margin-bottom: 20px; font-weight: 800; letter-spacing: -1px;
         }
-        
-        /* 2 line break for mobile */
-        .hero h1 .break::after {
-            content: '\A';
-            white-space: pre;
-        }
-        
-        .hero-subtitle {
-            font-size: 1.2rem; margin-bottom: 30px; opacity: 0.95;
-        }
-        
-        .hero-subtitle .break::after {
-            content: '\A';
-            white-space: pre;
-        }
+        .hero-subtitle { font-size: 1.2rem; margin-bottom: 30px; opacity: 0.95; font-weight: 300; }
 
-        /* Trust Badges 2x2 Grid */
         .trust-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            max-width: 450px;
-            margin: 0 auto 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+            max-width: 500px; margin: 0 auto 40px;
         }
-
         .trust-item {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 12px 15px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+            padding: 10px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+            color: white; font-size: 0.9rem; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
+        .trust-item i { color: #facc15; } /* Gold Icon */
 
-        .trust-item i { color: #fef08a; }
-
-        .hero-cta { 
-            display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;
-        }
-        
-        .btn-white {
-            background: white; color: var(--primary-blue); padding: 12px 30px; border-radius: 50px;
-            font-weight: 600; text-decoration: none; cursor: pointer; border: none;
-            transition: var(--transition); display: inline-flex; align-items: center; gap: 8px;
-        }
-        .btn-white:hover { transform: translateY(-3px); background: #f8fafc; }
-
-        /* Compact Form in Hero */
+        /* Compact Hero Form */
         .lead-card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            max-width: 420px;
-            margin: 0 auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            background: white; border-radius: 20px; padding: 25px;
+            max-width: 450px; margin: 0 auto; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
+        .lead-card h3 { color: var(--primary-blue); margin-bottom: 15px; font-size: 1.1rem; font-weight: 700; }
 
-        .lead-card h3 {
-            font-size: 1.1rem;
-            color: var(--primary-blue);
-            margin-bottom: 1rem;
-            text-align: center;
-            font-weight: 700;
-            white-space: nowrap;
+        .form-group { margin-bottom: 12px; }
+        .form-input {
+            width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;
+            font-family: inherit; font-size: 0.9rem; outline: none; transition: 0.3s;
         }
-
-        .form-group { margin-bottom: 0.75rem; }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.3rem;
-            font-weight: 500;
-            font-size: 0.8rem;
-            color: var(--dark);
-            text-align: left;
-        }
-        
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.6rem 0.875rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            background: #f8fafc;
-        }
-        
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background: white;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
+        .form-input:focus { border-color: var(--primary-blue); background: #f8fafc; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
         .submit-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: linear-gradient(135deg, var(--primary-blue), var(--primary-red));
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-            transition: all 0.3s;
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #16a34a, #15803d);
+            color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;
+            font-size: 1rem; transition: 0.3s;
         }
-        
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.3);
-        }
+        .submit-btn:hover { background: #14532d; transform: translateY(-2px); }
 
-        .secure-note {
-            text-align: center;
-            margin-top: 0.75rem;
-            font-size: 0.75rem;
-            color: var(--text-gray);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        /* Sticky Properties Section (Adymize Style) */
+        /* --- 4. STICKY PROPERTIES (Adymize Effect) --- */
         .stack-wrapper {
-            background: #e2e8f0;
-            padding: 80px 0 150px;
-            position: relative;
+            background: #e2e8f0; padding: 80px 0 120px;
+            overflow: hidden; /* Important for clean look */
         }
-
-        .section-header { text-align: center; margin-bottom: 60px; padding: 0 20px; }
-        .section-header h2 { font-size: 2.5rem; color: var(--dark); margin-bottom: 10px; white-space: nowrap; }
-        .section-header p { color: var(--text-gray); }
-
-        .cards-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            position: relative;
-        }
+        .section-header { text-align: center; margin-bottom: 50px; padding: 0 20px; }
+        .section-header h2 { font-size: 2.5rem; color: var(--dark); margin-bottom: 10px; font-weight: 700; }
+        
+        .cards-container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
 
         .property-card {
-            position: sticky;
-            top: 100px;
-            height: 500px;
-            margin-bottom: 50px;
-            background: var(--card-bg);
-            border-radius: 30px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            display: flex;
-            overflow: hidden;
-            transform-origin: center top;
-            transition: transform 0.1s linear, filter 0.1s linear;
-            border: 1px solid rgba(255,255,255,0.5);
+            position: sticky; top: 100px;
+            height: 500px; margin-bottom: 40px;
+            background: white; border-radius: 24px;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15);
+            display: flex; overflow: hidden;
+            transform-origin: center top; transition: transform 0.1s linear, filter 0.1s linear;
+            border: 1px solid rgba(255,255,255,0.8);
         }
 
-        .card-img { width: 55%; height: 100%; position: relative; overflow: hidden; }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .card-img { width: 50%; height: 100%; position: relative; overflow: hidden; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
         .property-card:hover .card-img img { transform: scale(1.05); }
 
-        .card-details { 
-            width: 45%; padding: 40px; display: flex; flex-direction: column; 
-            justify-content: center; position: relative; 
-        }
+        .card-details { width: 50%; padding: 40px; display: flex; flex-direction: column; justify-content: center; position: relative; }
         
         .tag {
-            position: absolute; top: 40px; right: 40px;
-            background: var(--primary-red); color: white; padding: 5px 15px;
-            border-radius: 20px; font-weight: 600; font-size: 0.8rem;
+            position: absolute; top: 30px; right: 30px;
+            background: var(--primary-red); color: white; padding: 6px 16px;
+            border-radius: 50px; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
         }
 
-        .price { font-size: 2rem; font-weight: 800; color: var(--primary-red); margin-bottom: 10px; }
-        .title { font-size: 1.8rem; font-weight: 700; line-height: 1.3; margin-bottom: 20px; color: var(--dark); }
+        .price { font-size: 2.2rem; font-weight: 800; color: var(--primary-blue); margin-bottom: 5px; }
+        .title { font-size: 1.6rem; font-weight: 700; line-height: 1.3; margin-bottom: 20px; color: var(--dark); }
         
-        .features { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .feat { display: flex; align-items: center; gap: 10px; color: var(--text-gray); font-size: 0.9rem; }
+        .features { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .feat { display: flex; align-items: center; gap: 8px; color: var(--text-gray); font-size: 0.9rem; font-weight: 500; }
         .feat i { color: var(--primary-blue); }
 
         .card-btn {
-            background: var(--dark); color: white; border: none; padding: 15px;
-            border-radius: 12px; font-weight: 600; cursor: pointer;
+            background: var(--dark); color: white; padding: 14px; border: none;
+            border-radius: 10px; font-weight: 600; cursor: pointer;
             display: flex; justify-content: center; align-items: center; gap: 10px;
             transition: var(--transition);
         }
         .card-btn:hover { background: var(--primary-blue); }
 
-        /* Location Section */
-        .location-section {
-            background: linear-gradient(135deg, var(--dark), var(--primary-blue));
-            color: white;
-            padding: 100px 5%;
-            position: relative;
-        }
-
-        .location-content { max-width: 1000px; margin: 0 auto; }
-        
-        .location-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            font-weight: 700;
-        }
-        
-        .location-title .break::after {
-            content: '\A';
-            white-space: pre;
-        }
-
-        .location-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .location-list { list-style: none; }
-        .location-list li {
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: start;
-            gap: 1rem;
-            font-size: 1.1rem;
-        }
-        .location-list i { color: #fef08a; font-size: 1.2rem; margin-top: 0.2rem; }
-
-        .stats-wrapper { display: flex; flex-direction: column; gap: 1rem; }
-        
-        .stat-box {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.2);
-            text-align: center;
-            transition: all 0.3s;
-        }
-        
-        .stat-box:hover { transform: translateY(-5px); background: rgba(255,255,255,0.15); }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #fef08a;
-            display: block;
-            line-height: 1;
-        }
-        
-        .stat-label { font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.9; }
-
-        /* Founder Section */
+        /* --- 5. FOUNDER SECTION --- */
         .info-section { padding: 100px 5%; background: white; }
         .info-grid {
             max-width: 1100px; margin: 0 auto;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;
+            display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 60px; align-items: center;
         }
 
-        .founder-img {
-            position: relative; border-radius: 20px; overflow: hidden;
-            box-shadow: 20px 20px 0px var(--primary-blue);
+        /* Founder Image Style */
+        .founder-img-wrap {
+            position: relative;
+            padding: 10px;
+            border: 2px dashed var(--primary-blue);
+            border-radius: 30px;
             transform: rotate(-3deg);
-            transition: all 0.4s;
+            transition: 0.3s;
         }
+        .founder-img-wrap:hover { transform: rotate(0deg); }
         
-        .founder-img:hover {
-            transform: rotate(0deg) scale(1.02);
+        .founder-img {
+            border-radius: 20px; overflow: hidden; height: 450px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
         }
+        .founder-img img { width: 100%; height: 100%; object-fit: cover; }
         
-        .founder-img img { width: 100%; height: 400px; object-fit: cover; display: block; }
+        /* Overlay Badge on Founder Image */
+        .founder-badge {
+            position: absolute; bottom: 20px; left: 20px;
+            background: white; padding: 10px 20px; border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .founder-badge strong { display: block; color: var(--primary-blue); font-size: 1.2rem; }
+        .founder-badge span { font-size: 0.8rem; color: var(--text-gray); }
 
-        .info-content h2 { font-size: 2.5rem; margin-bottom: 10px; color: var(--dark); }
-        .info-content h3 { 
-            color: var(--primary-red); 
-            margin-bottom: 20px; 
-            font-size: 1.3rem; 
-            font-weight: 600;
-        }
-        .info-content p { color: var(--text-gray); margin-bottom: 20px; line-height: 1.8; }
+        .info-content h2 { font-size: 2.2rem; color: var(--dark); margin-bottom: 5px; }
+        .info-content h3 { color: var(--primary-red); font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; }
+        .info-content p { color: var(--text-gray); margin-bottom: 15px; line-height: 1.8; font-size: 1rem; }
         
-        .stats-row { display: flex; gap: 40px; margin-top: 30px; }
-        .stat h3 { font-size: 2rem; color: var(--primary-blue); font-weight: 800; }
-        .stat span { font-size: 0.9rem; color: var(--text-gray); }
+        .stats-row { display: flex; gap: 40px; margin-top: 30px; padding-top: 30px; border-top: 1px solid #eee; }
+        .stat h4 { font-size: 2rem; color: var(--primary-blue); font-weight: 800; line-height: 1; }
+        .stat span { font-size: 0.85rem; color: var(--text-gray); font-weight: 500; }
 
-        /* FAQ Section */
+        /* --- 6. LOCATION & FAQ & FOOTER (Streamlined) --- */
+        .location-section {
+            background: var(--dark); color: white; padding: 80px 5%;
+        }
+        .location-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1000px; margin: 0 auto;
+        }
+        .location-list li {
+            padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; gap: 15px; font-size: 1.1rem;
+        }
+        .location-list i { color: var(--primary-red); margin-top: 5px; }
+
         .faq-section { padding: 80px 5%; background: var(--light); }
-        .faq-container { max-width: 800px; margin: 0 auto; }
-        
         .faq-item {
-            background: white; margin-bottom: 15px; border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); overflow: hidden;
-            cursor: pointer;
+            background: white; margin-bottom: 15px; border-radius: 10px;
+            overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
         }
-        .faq-question {
-            padding: 20px; font-weight: 600;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .faq-answer {
-            max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
-            padding: 0 20px; color: var(--text-gray);
-        }
-        .faq-item.active .faq-answer { padding-bottom: 20px; max-height: 200px; }
-        .faq-item.active .faq-question i { transform: rotate(180deg); }
+        .faq-question { padding: 20px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: 0.3s; padding: 0 20px; color: var(--text-gray); }
+        .faq-item.active .faq-answer { padding-bottom: 20px; max-height: 150px; }
 
-        /* Footer */
-        footer { background: var(--dark); color: white; padding: 60px 5% 20px; }
-        .footer-grid {
-            max-width: 1200px; margin: 0 auto; display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;
-        }
+        footer { background: #0b1120; color: #94a3b8; padding: 60px 5% 20px; font-size: 0.9rem; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; }
         .footer-col h3 { color: white; margin-bottom: 20px; }
-        .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 10px; color: #94a3b8; }
-        .footer-col ul li a { color: #94a3b8; text-decoration: none; }
-        .footer-col ul li a:hover { color: white; }
-        
-        .copyright {
-            text-align: center; margin-top: 60px; padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1); color: #94a3b8; font-size: 0.9rem;
-        }
+        .footer-col a { color: #94a3b8; text-decoration: none; display: block; margin-bottom: 10px; }
+        .footer-col a:hover { color: white; }
 
-        /* Modal (Full Form) */
+        /* --- 7. MODAL --- */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-            z-index: 2000; display: none; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(5px);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000;
+            display: none; justify-content: center; align-items: center; opacity: 0; transition: 0.3s;
+            backdrop-filter: blur(5px);
         }
         .modal-overlay.active { display: flex; opacity: 1; }
-
         .modal-box {
-            background: white; width: 90%; max-width: 450px; padding: 30px;
-            border-radius: 24px; position: relative; max-height: 90vh; overflow-y: auto;
-            transform: scale(0.9); transition: transform 0.3s;
+            background: white; width: 90%; max-width: 420px; padding: 30px;
+            border-radius: 20px; position: relative; transform: scale(0.9); transition: 0.3s;
         }
         .modal-overlay.active .modal-box { transform: scale(1); }
-
-        .close-btn {
-            position: absolute; top: 15px; right: 20px; font-size: 28px;
-            cursor: pointer; color: var(--text-gray); background: none; border: none;
-            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .close-btn:hover { background: #f1f5f9; }
-
-        .modal-title { text-align: center; margin-bottom: 25px; }
-        .modal-title h3 { font-size: 1.3rem; color: var(--primary-blue); margin-bottom: 5px; }
-        .modal-title p { font-size: 0.9rem; color: var(--text-gray); }
-
-        .form-group { margin-bottom: 15px; }
-        .form-group label { 
-            display: block; font-size: 0.85rem; font-weight: 500; 
-            margin-bottom: 6px; color: var(--dark); text-align: left;
-        }
-        .form-input {
-            width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0;
-            border-radius: 10px; font-family: inherit; font-size: 0.95rem;
-            transition: border-color 0.3s;
-        }
-        .form-input:focus { border-color: var(--primary-blue); outline: none; }
-
-        .submit-btn-modal {
-            width: 100%; padding: 14px; background: #25d366; color: white;
-            border: none; border-radius: 10px; font-weight: 600; font-size: 1rem;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-            margin-top: 10px; transition: 0.3s;
-        }
-        .submit-btn-modal:hover { background: #128c7e; transform: translateY(-2px); }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; background: none; border: none; }
 
         /* Sticky WhatsApp */
-        .sticky-wa {
-            position: fixed; bottom: 25px; right: 25px; z-index: 900;
+        .sticky-wa { position: fixed; bottom: 30px; right: 30px; z-index: 999; }
+        .sticky-wa button {
+            width: 60px; height: 60px; background: #25d366; border-radius: 50%; border: none;
+            color: white; font-size: 30px; cursor: pointer; box-shadow: 0 10px 25px rgba(37,211,102,0.4);
+            animation: pulse 2s infinite; transition: 0.3s; display: flex; align-items: center; justify-content: center;
         }
-        .sticky-wa-btn {
-            width: 60px; height: 60px; background: #25d366; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 30px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
-            cursor: pointer; border: none; transition: all 0.3s;
-            animation: pulse-ring 2s infinite;
-        }
-        
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-        
-        .sticky-wa-btn:hover { transform: scale(1.1); }
+        .sticky-wa button:hover { transform: scale(1.1); }
 
-        /* Responsive */
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.7); } 70% { box-shadow: 0 0 0 20px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+
+        /* --- 8. RESPONSIVE DESIGN (MOBILE) --- */
         @media (max-width: 968px) {
+            .nav-links { 
+                position: absolute; top: 70px; left: 0; width: 100%; background: white; 
+                flex-direction: column; padding: 20px; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { display: flex; }
+            .menu-toggle { display: block; }
+            
             .hero h1 { font-size: 2.2rem; }
             .hero h1 .break::after { content: '\A'; white-space: pre; }
             
-            .trust-grid { max-width: 100%; }
-            .property-card { flex-direction: column; height: auto; min-height: 600px; top: 80px; }
+            /* Sticky Stack Fix for Mobile */
+            .property-card { flex-direction: column; height: auto; top: 80px; min-height: 550px; }
             .card-img { width: 100%; height: 250px; }
-            .card-details { width: 100%; padding: 30px 25px; }
-            .title { font-size: 1.5rem; }
+            .card-details { width: 100%; padding: 25px; }
+            .title { font-size: 1.4rem; }
             
-            .info-grid { grid-template-columns: 1fr; }
-            .founder-img { max-width: 350px; margin: 0 auto; transform: rotate(0); }
-            .founder-img img { height: 300px; }
+            /* Founder Section Mobile */
+            .info-grid { grid-template-columns: 1fr; gap: 30px; }
+            .founder-img-wrap { transform: rotate(0); max-width: 100%; margin: 0 auto; }
+            .founder-img { height: 350px; }
             
-            .location-grid { grid-template-columns: 1fr; gap: 2rem; }
-            .location-title { font-size: 2rem; }
-        }
-
-        @media (max-width: 640px) {
-            .hero h1 { font-size: 1.8rem; }
-            .hero-subtitle { font-size: 1rem; }
-            .trust-grid { grid-template-columns: 1fr; }
-            .form-row { grid-template-columns: 1fr; }
-            .section-header h2 { font-size: 1.8rem; white-space: normal; }
-            .btn-primary, .btn-white { width: 100%; justify-content: center; }
-            .hero-cta { flex-direction: column; width: 100%; }
+            .location-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -572,104 +315,73 @@
             <img src="https://i.ibb.co/hFzQjcPh/logo-2.png" alt="KK Real Estate">
         </a>
         
-        <nav>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#properties">Properties</a></li>
-                <li><a href="#about">Founder</a></li>
-                <li><a href="#location">Location</a></li>
-                <li><a href="tel:+917357309663" style="color: var(--primary-red); font-weight: 600;">
-                    <i class="fas fa-phone"></i> 7357309663
-                </a></li>
-            </ul>
-        </nav>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#properties">Properties</a></li>
+            <li><a href="#about">Founder</a></li>
+            <li><a href="#location">Location</a></li>
+            <li><a href="tel:+917357309663" style="color: var(--primary-red); font-weight: 600;">
+                <i class="fas fa-phone"></i> 7357309663
+            </a></li>
+        </ul>
         
         <div style="display: flex; gap: 15px; align-items: center;">
             <button class="btn-primary" onclick="openModal()">Enquire Now</button>
-            <button class="menu-toggle" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
-            </button>
+            <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
         </div>
     </header>
 
     <section class="hero" id="home">
         <div class="hero-content">
             <div class="hero-logo-circle">
-                <img src="https://i.ibb.co/Lhh2bZH4/png.png" alt="KK Real Estate Logo">
+                <img src="https://i.ibb.co/Lhh2bZH4/png.png" alt="KK Real Estate Icon">
             </div>
             
             <h1>
-                Jaipur me Apna<span class="break"></span>
-                Dream Home Ab<span class="break"></span>
-                Asaani Se Paayein
+                Jaipur Me Apna <span style="color: #facc15;">Dream Home</span><br>
+                Ab Asaani Se Paayein
             </h1>
             
             <p class="hero-subtitle">
-                Verified Villas, Homes & Flats – Starting ₹30 Lakhs<span class="break"></span>
-                Hatoj - Kalwar Road, Jaipur
+                Verified Villas, Homes & Flats @ Hatoj-Kalwar Road<br>
+                <strong>Starting ₹30 Lakhs | 80% Loan Available</strong>
             </p>
             
             <div class="trust-grid">
                 <div class="trust-item"><i class="fas fa-shield-alt"></i> RERA Approved</div>
-                <div class="trust-item"><i class="fas fa-building"></i> Nagar Nigam Approved</div>
-                <div class="trust-item"><i class="fas fa-landmark"></i> Loan Available</div>
+                <div class="trust-item"><i class="fas fa-university"></i> Bank Finance</div>
+                <div class="trust-item"><i class="fas fa-check-circle"></i> Ready to Move</div>
                 <div class="trust-item"><i class="fas fa-hand-holding-usd"></i> Govt Subsidy</div>
             </div>
-            
-            <div class="hero-cta">
-                <button class="btn-primary" onclick="openModal()">
-                    <i class="fab fa-whatsapp"></i> Get Details
-                </button>
-                <button class="btn-white" onclick="openModal()">
-                    <i class="fas fa-calendar-check"></i> Book Visit
-                </button>
-            </div>
 
-            <!-- Compact Form -->
-            <div class="lead-card" style="margin-top: 40px;">
-                <h3>Free Property Consultation</h3>
-                <form id="heroForm" onsubmit="handleHeroSubmit(event)">
+            <div class="lead-card">
+                <h3><i class="fas fa-home"></i> Free Consultation</h3>
+                <form onsubmit="handleHeroSubmit(event)">
                     <div class="form-group">
-                        <input type="text" id="heroName" placeholder="Full Name" required>
+                        <input type="text" id="heroName" class="form-input" placeholder="Enter Full Name" required>
                     </div>
-                    
                     <div class="form-group">
-                        <input type="tel" id="heroPhone" placeholder="Phone Number" 
-                               pattern="[0-9]{10}" maxlength="10" required>
+                        <input type="tel" id="heroPhone" class="form-input" placeholder="Phone Number (10 digits)" pattern="[0-9]{10}" maxlength="10" required>
                     </div>
-                    
                     <div class="form-row">
-                        <div class="form-group">
-                            <select id="heroType" style="color: #64748b;">
-                                <option value="" disabled selected>Property Type</option>
-                                <option value="Villa">Villa</option>
-                                <option value="Home">Home</option>
-                                <option value="Flat">Flat</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <select id="heroBudget" style="color: #64748b;">
-                                <option value="" disabled selected>Budget</option>
-                                <option value="₹30-40 Lakhs">₹30-40L</option>
-                                <option value="₹40-60 Lakhs">₹40-60L</option>
-                                <option value="₹60-90 Lakhs">₹60-90L</option>
-                            </select>
-                        </div>
+                        <select id="heroType" class="form-input">
+                            <option value="Villa">Villa</option>
+                            <option value="House">House</option>
+                            <option value="Flat">Flat</option>
+                            <option value="Plot">Plot</option>
+                        </select>
+                        <select id="heroBudget" class="form-input">
+                            <option value="30-40L">₹30-40L</option>
+                            <option value="40-60L">₹40-60L</option>
+                            <option value="60L+">₹60L+</option>
+                        </select>
                     </div>
-                    
-                    <div class="form-group">
-                        <input type="text" value="Hatoj / Kalwar Road" readonly 
-                               style="background: #e2e8f0; color: #475569;">
-                    </div>
-                    
                     <button type="submit" class="submit-btn">
-                        <i class="fab fa-whatsapp"></i> Send on WhatsApp
+                        <i class="fab fa-whatsapp"></i> Get Details on WhatsApp
                     </button>
-                    
-                    <div class="secure-note">
+                    <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 10px;">
                         <i class="fas fa-lock"></i> 100% Secure & Confidential
-                    </div>
+                    </p>
                 </form>
             </div>
         </div>
@@ -677,212 +389,88 @@
 
     <section class="stack-wrapper" id="properties">
         <div class="section-header">
-            <h2>Available Properties</h2>
-            <p>Scroll down to see premium inventory at Hatoj-Kalwar Road</p>
+            <h2>Featured Collection</h2>
+            <p>Scroll down to explore premium inventory</p>
         </div>
 
         <div class="cards-container">
-            <!-- Property 1 -->
             <div class="property-card">
                 <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80" alt="3BHK Villa">
+                    <img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&q=80" alt="Villa">
                 </div>
                 <div class="card-details">
                     <span class="tag">Ready to Move</span>
-                    <div class="price">₹85 Lakhs <span style="font-size:0.9rem; color:#64748b; font-weight:400">onwards</span></div>
-                    <h3 class="title">3BHK Premium Villa with Garden</h3>
+                    <div class="price">₹85 Lakhs</div>
+                    <h3 class="title">3BHK Luxury Villa with Garden</h3>
                     <div class="features">
-                        <div class="feat"><i class="fas fa-bed"></i> 3 Bedroom</div>
-                        <div class="feat"><i class="fas fa-bath"></i> 3 Bathroom</div>
-                        <div class="feat"><i class="fas fa-expand"></i> 1800 sq.ft</div>
-                        <div class="feat"><i class="fas fa-car"></i> 2 Parking</div>
+                        <div class="feat"><i class="fas fa-bed"></i> 3 Bed</div>
+                        <div class="feat"><i class="fas fa-bath"></i> 3 Bath</div>
+                        <div class="feat"><i class="fas fa-expand"></i> 1800 Sqft</div>
+                        <div class="feat"><i class="fas fa-car"></i> Parking</div>
                     </div>
                     <button class="card-btn" onclick="openModal()">
-                        <i class="fab fa-whatsapp"></i> Query on WhatsApp
+                        <i class="fab fa-whatsapp"></i> Request Floor Plan
                     </button>
                 </div>
             </div>
 
-            <!-- Property 2 -->
             <div class="property-card">
                 <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="2BHK Home">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Home">
                 </div>
                 <div class="card-details">
                     <span class="tag" style="background: var(--primary-blue);">Hot Deal</span>
-                    <div class="price">₹52 Lakhs <span style="font-size:0.9rem; color:#64748b; font-weight:400">onwards</span></div>
-                    <h3 class="title">2BHK Corner Independent House</h3>
+                    <div class="price">₹52 Lakhs</div>
+                    <h3 class="title">2BHK Independent Corner House</h3>
                     <div class="features">
-                        <div class="feat"><i class="fas fa-bed"></i> 2 Bedroom</div>
+                        <div class="feat"><i class="fas fa-bed"></i> 2 Bed</div>
                         <div class="feat"><i class="fas fa-compass"></i> East Facing</div>
-                        <div class="feat"><i class="fas fa-expand"></i> 1200 sq.ft</div>
+                        <div class="feat"><i class="fas fa-expand"></i> 1200 Sqft</div>
                         <div class="feat"><i class="fas fa-road"></i> 40ft Road</div>
                     </div>
                     <button class="card-btn" onclick="openModal()">
-                        <i class="fab fa-whatsapp"></i> Query on WhatsApp
+                        <i class="fab fa-whatsapp"></i> Check Availability
                     </button>
                 </div>
             </div>
 
-            <!-- Property 3 -->
             <div class="property-card">
                 <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="2BHK Flat">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="Flat">
                 </div>
                 <div class="card-details">
                     <span class="tag" style="background: #10b981;">New Launch</span>
-                    <div class="price">₹38 Lakhs <span style="font-size:0.9rem; color:#64748b; font-weight:400">onwards</span></div>
-                    <h3 class="title">2BHK Premium Garden Flat</h3>
+                    <div class="price">₹38 Lakhs</div>
+                    <h3 class="title">2BHK Premium Flat (JDA Approved)</h3>
                     <div class="features">
-                        <div class="feat"><i class="fas fa-bed"></i> 2 Bedroom</div>
-                        <div class="feat"><i class="fas fa-tree"></i> Garden View</div>
-                        <div class="feat"><i class="fas fa-expand"></i> 950 sq.ft</div>
+                        <div class="feat"><i class="fas fa-bed"></i> 2 Bed</div>
                         <div class="feat"><i class="fas fa-building"></i> 2nd Floor</div>
+                        <div class="feat"><i class="fas fa-expand"></i> 950 Sqft</div>
+                        <div class="feat"><i class="fas fa-shield-alt"></i> Gated</div>
                     </div>
                     <button class="card-btn" onclick="openModal()">
-                        <i class="fab fa-whatsapp"></i> Query on WhatsApp
+                        <i class="fab fa-whatsapp"></i> Book Site Visit
                     </button>
                 </div>
             </div>
 
-            <!-- Property 4 -->
-            <div class="property-card">
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80" alt="4BHK Villa">
-                </div>
-                <div class="card-details">
-                    <span class="tag" style="background: #8b5cf6;">Limited</span>
-                    <div class="price">₹1.2 Cr <span style="font-size:0.9rem; color:#64748b; font-weight:400">onwards</span></div>
-                    <h3 class="title">4BHK Luxury Duplex Villa</h3>
-                    <div class="features">
-                        <div class="feat"><i class="fas fa-bed"></i> 4 Bedroom</div>
-                        <div class="feat"><i class="fas fa-water"></i> Pool</div>
-                        <div class="feat"><i class="fas fa-expand"></i> 2200 sq.ft</div>
-                        <div class="feat"><i class="fas fa-car"></i> 3 Parking</div>
-                    </div>
-                    <button class="card-btn" onclick="openModal()">
-                        <i class="fab fa-whatsapp"></i> Query on WhatsApp
-                    </button>
-                </div>
-            </div>
-
-            <!-- Property 5 -->
-            <div class="property-card">
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1600573472591-ee6d0fa4999a?w=800&q=80" alt="1BHK Home">
-                </div>
-                <div class="card-details">
-                    <span class="tag" style="background: #f59e0b;">Best Value</span>
-                    <div class="price">₹32 Lakhs <span style="font-size:0.9rem; color:#64748b; font-weight:400">onwards</span></div>
-                    <h3 class="title">1BHK Starter Home</h3>
-                    <div class="features">
-                        <div class="feat"><i class="fas fa-bed"></i> 1 Bedroom</div>
-                        <div class="feat"><i class="fas fa-sun"></i> Ventilated</div>
-                        <div class="feat"><i class="fas fa-expand"></i> 650 sq.ft</div>
-                        <div class="feat"><i class="fas fa-road"></i> 30ft Road</div>
-                    </div>
-                    <button class="card-btn" onclick="openModal()">
-                        <i class="fab fa-whatsapp"></i> Query on WhatsApp
-                    </button>
-                </div>
-            </div>
-
-            <!-- Property 6 -->
-            <div class="property-card">
-                <div class="card-img">
-                    <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80" alt="Studio">
-                </div>
-                <div class="card-details">
-                    <span class="tag" style="background: #06b6d4;">Investment</span>
-                    <div class="price">₹18 Lakhs <span style="font-size:0.9rem; color:#64748b; font-weight:400">onwards</span></div>
-                    <h3 class="title">1RK Studio Apartment</h3>
-                    <div class="features">
-                        <div class="feat"><i class="fas fa-bed"></i> 1 Room</div>
-                        <div class="feat"><i class="fas fa-couch"></i> Furnished</div>
-                        <div class="feat"><i class="fas fa-expand"></i> 450 sq.ft</div>
-                        <div class="feat"><i class="fas fa-building"></i> 1st Floor</div>
-                    </div>
-                    <button class="card-btn" onclick="openModal()">
-                        <i class="fab fa-whatsapp"></i> Query on WhatsApp
-                    </button>
-                </div>
-            </div>
-
-            <!-- Property 7 -->
-            <div class="property-card">
+             <div class="property-card">
                 <div class="card-img">
                     <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" alt="Plot">
                 </div>
                 <div class="card-details">
-                    <span class="tag" style="background: #84cc16;">Plot</span>
-                    <div class="price">₹25 Lakhs <span style="font-size:0.9rem; color:#64748b; font-weight:400">onwards</span></div>
+                    <span class="tag" style="background: #f59e0b;">Investment</span>
+                    <div class="price">₹25 Lakhs</div>
                     <h3 class="title">100 Sq.Yd Residential Plot</h3>
                     <div class="features">
                         <div class="feat"><i class="fas fa-vector-square"></i> 100 Sq.Yd</div>
                         <div class="feat"><i class="fas fa-file-contract"></i> Registry OK</div>
                         <div class="feat"><i class="fas fa-compass"></i> North Facing</div>
-                        <div class="feat"><i class="fas fa-bolt"></i> Electricity</div>
+                        <div class="feat"><i class="fas fa-bolt"></i> All Amenities</div>
                     </div>
                     <button class="card-btn" onclick="openModal()">
-                        <i class="fab fa-whatsapp"></i> Query on WhatsApp
+                        <i class="fab fa-whatsapp"></i> Get Location Map
                     </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="location-section" id="location">
-        <div class="location-content">
-            <h2 class="location-title">
-                Hatoj / Kalwar Road<span class="break"></span>
-                - Smart Investment
-            </h2>
-            
-            <div class="location-grid">
-                <ul class="location-list">
-                    <li>
-                        <i class="fas fa-chart-line"></i>
-                        <div>
-                            <strong>Fast Developing Area</strong><br>
-                            <span style="font-size:0.9rem; opacity:0.8;">Jaipur ka sabse tezi se badhta residential hub</span>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fas fa-road"></i>
-                        <div>
-                            <strong>Expressway Connectivity</strong><br>
-                            <span style="font-size:0.9rem; opacity:0.8;">Jodhpur-Jaipur Expressway se direct connection</span>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fas fa-graduation-cap"></i>
-                        <div>
-                            <strong>Educational Hub</strong><br>
-                            <span style="font-size:0.9rem; opacity:0.8;">5km me 10+ top schools</span>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fas fa-hospital"></i>
-                        <div>
-                            <strong>Healthcare Nearby</strong><br>
-                            <span style="font-size:0.9rem; opacity:0.8;">EHCC Hospital 15 min me</span>
-                        </div>
-                    </li>
-                </ul>
-                
-                <div class="stats-wrapper">
-                    <div class="stat-box">
-                        <span class="stat-number" data-target="15">0</span>
-                        <div class="stat-label">Min to Railway Station</div>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-number" data-target="20">0</span>
-                        <div class="stat-label">Min to Airport</div>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-number" data-target="10">0</span>
-                        <div class="stat-label">Min to Metro</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -890,27 +478,63 @@
 
     <section class="info-section" id="about">
         <div class="info-grid">
-            <div class="founder-img">
-                <img src="https://i.ibb.co/nsL3ffgw/Whats-App-Image-2026-01-28-at-7-21-38-PM.jpg" alt="Shiv Pratap Singh">
+            <div class="founder-img-wrap">
+                <div class="founder-img">
+                    <img src="https://i.ibb.co/nsL3ffgw/Whats-App-Image-2026-01-28-at-7-21-38-PM.jpg" alt="Shiv Pratap Singh">
+                    <div class="founder-badge">
+                        <strong>Shiv Pratap Singh</strong>
+                        <span>Founder, KK Real Estate</span>
+                    </div>
+                </div>
             </div>
+            
             <div class="info-content">
-                <h2>Meet The Founder</h2>
-                <h3>Shiv Pratap Singh</h3>
-                <p>Welcome to KK Real Estate! With over 15 years of experience in the Jaipur real estate market, my mission is to provide transparent, legally verified, and affordable housing solutions to every family.</p>
-                <p>We specialize in Hatoj and Kalwar Road areas, ensuring high appreciation and quality living standards. Our commitment is 100% customer satisfaction with clear documentation.</p>
+                <h2>Meet Your Mentor</h2>
+                <h3>Making Home Buying Simple</h3>
+                <p>Namaste! I am Shiv Pratap Singh. With over <strong>15 years of experience</strong> in Jaipur's real estate market, I founded KK Real Estate with a simple mission: <em>To provide legal, transparent, and affordable homes to every family.</em></p>
+                <p>We specialize in the <strong>Hatoj & Kalwar Road</strong> belt, ensuring that your investment grows securely. My team and I personally verify every document so you can have 100% peace of mind.</p>
                 
                 <div class="stats-row">
                     <div class="stat">
-                        <h3>15+</h3>
-                        <span>Years Exp.</span>
+                        <h4>15+</h4>
+                        <span>Years Exp</span>
                     </div>
                     <div class="stat">
-                        <h3>500+</h3>
-                        <span>Deliveries</span>
+                        <h4>500+</h4>
+                        <span>Happy Families</span>
                     </div>
                     <div class="stat">
-                        <h3>100%</h3>
-                        <span>Legal Work</span>
+                        <h4>100%</h4>
+                        <span>Legal Approval</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="location-section" id="location">
+        <div class="section-header" style="color: white;">
+            <h2 style="color: white;">Prime Location</h2>
+            <p style="color: #cbd5e1;">Hatoj - Kalwar Road: The Future of Jaipur</p>
+        </div>
+        <div class="location-grid">
+            <ul class="location-list">
+                <li><i class="fas fa-check-circle"></i> Direct Connectivity to Jodhpur Highway</li>
+                <li><i class="fas fa-check-circle"></i> 5km Radius: 10+ Top Schools</li>
+                <li><i class="fas fa-check-circle"></i> 15 Min from EHCC Hospital</li>
+                <li><i class="fas fa-check-circle"></i> Fast Developing Residential Hub</li>
+            </ul>
+            <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px;">
+                <h3 style="margin-bottom: 20px;">Distance Matrix</h3>
+                <div style="display: flex; justify-content: space-between; text-align: center;">
+                    <div>
+                        <strong style="font-size: 2rem; color: #facc15;">20</strong><br>Min Airport
+                    </div>
+                    <div>
+                        <strong style="font-size: 2rem; color: #facc15;">15</strong><br>Min Station
+                    </div>
+                    <div>
+                        <strong style="font-size: 2rem; color: #facc15;">10</strong><br>Min Metro
                     </div>
                 </div>
             </div>
@@ -919,40 +543,20 @@
 
     <section class="faq-section">
         <div class="section-header">
-            <h2>Frequently Asked Questions</h2>
+            <h2>Common Questions</h2>
         </div>
-        <div class="faq-container">
+        <div class="cards-container" style="max-width: 800px;">
             <div class="faq-item" onclick="toggleFAQ(this)">
-                <div class="faq-question">
-                    Kya property RERA approved hai? <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    Haan, sabhi projects Rajasthan RERA registered hain. Aap verification kar sakte hain.
-                </div>
+                <div class="faq-question">Is Loan Available? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Yes, we have tie-ups with SBI, HDFC, and ICICI banks. Up to 90% loan available.</div>
             </div>
             <div class="faq-item" onclick="toggleFAQ(this)">
-                <div class="faq-question">
-                    Home loan available hai kya? <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    Ji haan! SBI, HDFC, ICICI sabhi banks se loan facility available hai. 80-90% tak loan mil sakta hai.
-                </div>
+                <div class="faq-question">Are properties JDA Approved? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Yes, most of our inventory is JDA Approved and RERA registered.</div>
             </div>
             <div class="faq-item" onclick="toggleFAQ(this)">
-                <div class="faq-question">
-                    Government subsidy kaise milegi? <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    PMAY scheme ke under first-time buyers ko ₹2.67L tak subsidy milti hai. Ham help karenge.
-                </div>
-            </div>
-            <div class="faq-item" onclick="toggleFAQ(this)">
-                <div class="faq-question">
-                    Site visit free hai kya? <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    Bilkul free! Pickup aur drop facility available hai.
-                </div>
+                <div class="faq-question">Do you charge Brokerage? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">No, for our direct projects, we do not charge any brokerage from buyers.</div>
             </div>
         </div>
     </section>
@@ -960,244 +564,134 @@
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <h3>KK Real Estate</h3>
-                <p style="color: #94a3b8;">Your trusted partner for buying dream homes in Jaipur. Transparency and Trust is our motto.</p>
+                <img src="https://i.ibb.co/hFzQjcPh/logo-2.png" alt="Logo" style="height: 40px; margin-bottom: 15px; filter: brightness(0) invert(1);">
+                <p>Your trusted partner for verified properties in Jaipur.</p>
             </div>
             <div class="footer-col">
                 <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#properties">Properties</a></li>
-                    <li><a href="#location">Location</a></li>
-                    <li><a href="#about">About Us</a></li>
-                </ul>
+                <a href="#home">Home</a>
+                <a href="#properties">Properties</a>
+                <a href="#about">Founder</a>
             </div>
             <div class="footer-col">
                 <h3>Contact</h3>
-                <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> Hatoj, Kalwar Road, Jaipur</li>
-                    <li><i class="fas fa-phone"></i> +91 7357309663</li>
-                    <li><i class="fas fa-envelope"></i> info@kkrealestate.in</li>
-                </ul>
+                <p>Hatoj, Kalwar Road, Jaipur</p>
+                <p>+91 7357309663</p>
+                <p>info@kkrealestate.in</p>
             </div>
         </div>
-        <div class="copyright">
-            &copy; 2024 KK Real Estate. All Rights Reserved.
+        <div style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid #1e293b;">
+            &copy; 2024 KK Real Estate. All rights reserved.
         </div>
     </footer>
 
-    <!-- Full Form Modal -->
     <div class="modal-overlay" id="leadModal">
         <div class="modal-box">
             <button class="close-btn" onclick="closeModal()">&times;</button>
-            <div class="modal-title">
-                <h3>Get Property Details</h3>
-                <p>Fill details to receive information on WhatsApp</p>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h3 style="color: var(--primary-blue);">Get Exclusive Details</h3>
+                <p style="color: var(--text-gray); font-size: 0.9rem;">Price list & Photos on WhatsApp</p>
             </div>
-            
             <form onsubmit="handleModalSubmit(event)">
                 <div class="form-group">
-                    <label>Full Name *</label>
-                    <input type="text" id="modalName" class="form-input" placeholder="Aapka naam" required>
+                    <input type="text" id="mName" class="form-input" placeholder="Full Name" required>
                 </div>
-                
                 <div class="form-group">
-                    <label>Phone Number *</label>
-                    <input type="tel" id="modalPhone" class="form-input" placeholder="10 digit number" 
-                           pattern="[0-9]{10}" maxlength="10" required>
+                    <input type="tel" id="mPhone" class="form-input" placeholder="Phone Number" required>
                 </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="form-group">
-                        <label>Property Type</label>
-                        <select id="modalType" class="form-input">
-                            <option value="Villa">Villa</option>
-                            <option value="Home">Home</option>
-                            <option value="Flat">Flat</option>
-                            <option value="Plot">Plot</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Budget</label>
-                        <select id="modalBudget" class="form-input">
-                            <option value="₹30-40 Lakhs">₹30-40L</option>
-                            <option value="₹40-60 Lakhs">₹40-60L</option>
-                            <option value="₹60-90 Lakhs">₹60-90L</option>
-                            <option value="₹90L+">₹90L+</option>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="form-group">
-                    <label>Preferred Location</label>
-                    <input type="text" value="Hatoj / Kalwar Road, Jaipur" class="form-input" readonly 
-                           style="background: #f1f5f9; color: #64748b;">
+                    <select id="mType" class="form-input">
+                        <option value="Villa">Villa</option>
+                        <option value="House">House</option>
+                        <option value="Plot">Plot</option>
+                    </select>
                 </div>
-
-                <button type="submit" class="submit-btn-modal">
-                    <i class="fab fa-whatsapp"></i> Send Details on WhatsApp
+                <button type="submit" class="submit-btn">
+                    <i class="fab fa-whatsapp"></i> Send Now
                 </button>
-                
-                <p style="text-align: center; font-size: 0.8rem; color: #94a3b8; margin-top: 15px;">
-                    <i class="fas fa-lock"></i> Your information is 100% secure
-                </p>
             </form>
         </div>
     </div>
 
     <div class="sticky-wa">
-        <button class="sticky-wa-btn" onclick="openModal()">
-            <i class="fab fa-whatsapp"></i>
-        </button>
+        <button onclick="openModal()"><i class="fab fa-whatsapp"></i></button>
     </div>
 
     <script>
-        // Mobile Menu Toggle
+        // --- Navigation ---
         function toggleMenu() {
             document.getElementById('navLinks').classList.toggle('active');
         }
 
-        // Modal Functions
+        // --- Modal ---
+        const modal = document.getElementById('leadModal');
         function openModal() {
-            document.getElementById('leadModal').classList.add('active');
+            modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
         function closeModal() {
-            document.getElementById('leadModal').classList.remove('active');
+            modal.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
-
-        // Close on outside click
-        window.onclick = function(event) {
-            const modal = document.getElementById('leadModal');
-            if (event.target === modal) {
-                closeModal();
-            }
+        window.onclick = function(e) {
+            if(e.target === modal) closeModal();
         }
 
-        // Hero Form Submit
+        // --- WhatsApp Logic ---
+        function sendWA(name, phone, type, budget) {
+            const msg = `Hello KK Real Estate,\nName: ${name}\nPhone: ${phone}\nType: ${type}\nBudget: ${budget}\nPlease share details.`;
+            window.open(`https://wa.me/917357309663?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
         function handleHeroSubmit(e) {
             e.preventDefault();
-            const name = document.getElementById('heroName').value;
-            const phone = document.getElementById('heroPhone').value;
-            const type = document.getElementById('heroType').value || 'Any';
-            const budget = document.getElementById('heroBudget').value || 'Any';
-            
-            const message = `Hello KK Real Estate,
-
-Name: ${name}
-Phone: ${phone}
-Property Type: ${type}
-Budget: ${budget}
-Location: Hatoj / Kalwar Road, Jaipur
-
-Please contact me.`;
-            
-            window.open(`https://wa.me/917357309663?text=${encodeURIComponent(message)}`, '_blank');
+            sendWA(
+                document.getElementById('heroName').value,
+                document.getElementById('heroPhone').value,
+                document.getElementById('heroType').value,
+                document.getElementById('heroBudget').value
+            );
         }
 
-        // Modal Form Submit
         function handleModalSubmit(e) {
             e.preventDefault();
-            const name = document.getElementById('modalName').value;
-            const phone = document.getElementById('modalPhone').value;
-            const type = document.getElementById('modalType').value;
-            const budget = document.getElementById('modalBudget').value;
-            
-            const message = `Hello KK Real Estate,
-
-Name: ${name}
-Phone: ${phone}
-Property Type: ${type}
-Budget: ${budget}
-Location: Hatoj / Kalwar Road, Jaipur
-
-Please contact me.`;
-            
-            window.open(`https://wa.me/917357309663?text=${encodeURIComponent(message)}`, '_blank');
+            sendWA(
+                document.getElementById('mName').value,
+                document.getElementById('mPhone').value,
+                document.getElementById('mType').value,
+                "Not Specified"
+            );
             closeModal();
         }
 
-        // FAQ Toggle
-        function toggleFAQ(element) {
-            const isActive = element.classList.contains('active');
-            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
-            if (!isActive) element.classList.add('active');
+        // --- FAQ Toggle ---
+        function toggleFAQ(item) {
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            if(!isActive) item.classList.add('active');
         }
 
-        // Adymize Card Scroll Effect
+        // --- Adymize Card Effect ---
         const cards = document.querySelectorAll('.property-card');
-        
-        function scrollHandler() {
+        window.addEventListener('scroll', () => {
             const windowHeight = window.innerHeight;
-            
             cards.forEach((card, index) => {
                 if (index === cards.length - 1) return;
-                
-                const cardRect = card.getBoundingClientRect();
                 const nextCard = cards[index + 1];
-                const nextCardRect = nextCard.getBoundingClientRect();
-                const distanceToTop = nextCardRect.top;
+                const nextRect = nextCard.getBoundingClientRect();
                 
-                if (distanceToTop < windowHeight) {
-                    let factor = 1 - (distanceToTop / windowHeight);
-                    if (factor < 0) factor = 0;
-                    if (factor > 1) factor = 1;
+                if (nextRect.top < windowHeight) {
+                    let factor = 1 - (nextRect.top / windowHeight);
+                    if(factor < 0) factor = 0;
+                    if(factor > 1) factor = 1;
                     
-                    const scale = 1 - (factor * 0.05);
-                    const brightness = 1 - (factor * 0.2);
-                    
-                    card.style.transform = `scale(${scale})`;
-                    card.style.filter = `brightness(${brightness})`;
+                    // Scale down slightly and fade
+                    card.style.transform = `scale(${1 - (factor * 0.05)})`;
+                    card.style.filter = `brightness(${1 - (factor * 0.1)})`;
                 } else {
                     card.style.transform = 'scale(1)';
                     card.style.filter = 'brightness(1)';
                 }
-            });
-        }
-        
-        window.addEventListener('scroll', scrollHandler);
-        scrollHandler();
-
-        // Counter Animation
-        const counters = document.querySelectorAll('.stat-number');
-        const speed = 200;
-        
-        function animateCounters() {
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                const inc = target / speed;
-                
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(animateCounters, 20);
-                } else {
-                    counter.innerText = target;
-                }
-            });
-        }
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        
-        const statsWrapper = document.querySelector('.stats-wrapper');
-        if (statsWrapper) {
-            observer.observe(statsWrapper);
-        }
-        
-        // Phone validation
-        document.querySelectorAll('input[type="tel"]').forEach(input => {
-            input.addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
             });
         });
     </script>
